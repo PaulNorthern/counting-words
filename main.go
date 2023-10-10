@@ -27,22 +27,11 @@ func main() {
 
 	words = os.Args[1:]
 	if len(words) == 0 {
-		fmt.Println("Enter the words via arguments:")
-		os.Exit(1)
+		fmt.Println("No program arguments:")
+		//os.Exit(1)
 	}
-	//if len(words) != 5 {
-	//	fmt.Println("5 слов в командной строке не было найдено, введите их через пробел:")
-	//	reader, err := bufio.NewReader(os.Stdin).ReadString('\n')
-	//	words = strings.Split(reader, " ")
-	//	if err != nil {
-	//		os.Exit(1)
-	//	}
-	//	if len(words) != 5 {
-	//		os.Exit(1)
-	//	}
-	//}
 
-	if err := run(); err != nil {
+	if err := Run(32, "pleasure", "explain", "itself", "mistaken", "pain"); err != nil {
 		logger.Error("%v", err)
 		os.Exit(1)
 	}
@@ -53,7 +42,10 @@ func main() {
 
 }
 
-func run() error {
+func Run(countThreads int, args ...string) error {
+	if args != nil {
+		words = args
+	}
 	file, err := os.Open("input")
 	if err != nil {
 		return err
@@ -66,7 +58,6 @@ func run() error {
 	//}
 	//defer w.Close()
 
-	countThreads := 2
 	out := make(chan KeyValue, countThreads)
 
 	wg := sync.WaitGroup{}
